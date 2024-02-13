@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Main extends JPanel implements ActionListener {
+public class Reference extends JPanel implements ActionListener {
     private static final int WIDTH = 1280;
     private static final int HEIGHT = 720;
     private static final int PARTICLE_SIZE = 5;
@@ -16,7 +16,7 @@ public class Main extends JPanel implements ActionListener {
     private List<Wall> walls;
     private Timer timer;
 
-    public Main() {
+    public Reference() {
         particles = new ArrayList<>();
         walls = new ArrayList<>();
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -140,7 +140,7 @@ public class Main extends JPanel implements ActionListener {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Particle Simulator");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.getContentPane().add(new Main());
+            frame.getContentPane().add(new Reference());
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
