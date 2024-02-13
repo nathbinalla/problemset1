@@ -1,23 +1,17 @@
 import javax.swing.*;
+import java.awt.*;
 
 public class Main {
     public static void main(String[] args) {
-        // Create a JFrame, which represents the window of the application
-        JFrame frame = new JFrame("Simple GUI Example");
-
-        // Set the size of the frame
-        frame.setSize(1280, 720);
-
-        // Set the default operation when the close button is clicked
+        JFrame frame = new JFrame("Canvas Example");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Create a JLabel to display text
-        JLabel label = new JLabel("Hello, World!");
+        Canvas canvasPanel = new Canvas();
+        canvasPanel.setPreferredSize(new Dimension(1280, 720));
 
-        // Add the label to the frame
-        frame.add(label);
-
-        // Make the frame visible
+        frame.getContentPane().add(canvasPanel);
+        frame.pack();
         frame.setVisible(true);
     }
 }
+
