@@ -103,8 +103,12 @@ public class Reference extends JPanel implements ActionListener {
         }
 
         public void draw(Graphics g) {
+            // Adjust particle coordinates if they are out of bounds
+            int adjustedX = Math.max(PARTICLE_SIZE / 2, Math.min(x, WIDTH - PARTICLE_SIZE / 2));
+            int adjustedY = Math.max(PARTICLE_SIZE / 2, Math.min(y, HEIGHT - PARTICLE_SIZE / 2));
+        
             g.setColor(Color.RED);
-            g.fillOval(x - PARTICLE_SIZE / 2, y - PARTICLE_SIZE / 2, PARTICLE_SIZE, PARTICLE_SIZE);
+            g.fillOval(adjustedX - PARTICLE_SIZE / 2, adjustedY - PARTICLE_SIZE / 2, PARTICLE_SIZE, PARTICLE_SIZE);
         }
     }
 
@@ -122,12 +126,36 @@ public class Reference extends JPanel implements ActionListener {
         }
 
         public boolean intersects(Particle particle) {
-            // Code to check if the particle intersects with the wall
-            return false;
+            // Calculate the distance between the particle and the line formed by the wall
+            double distance = Math.abs((x2 - x1) * (y1 - particle.y) - (x1 - particle.x) * (y2 - y1))
+                                    / Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+
+            // Check if the distance is within the particle size radius
+            return distance <= PARTICLE_SIZE / 2;
         }
 
         public void resolveCollision(Particle particle) {
-            // Code to resolve collision between the particle and the wall
+            // Calculate the normal vector of the wall
+            double wallNormalX = y2 - y1;
+            double wallNormalY = x1 - x2;
+
+            // Normalize the normal vector
+            double length = Math.sqrt(wallNormalX * wallNormalX + wallNormalY * wallNormalY);
+            wallNormalX /= length;
+            wallNormalY /= length;
+
+            // Calculate the dot product between particle velocity vector and wall normal vector
+            double dotProduct = particle.velocity * (wallNormalX * Math.cos(Math.toRadians(particle.angle)) + wallNormalY * Math.sin(Math.toRadians(particle.angle)));
+
+            // Reflect the particle velocity vector across the wall normal
+            double reflectedVelocityX = particle.velocity * Math.cos(Math.toRadians(particle.angle)) - 2 * dotProduct * wallNormalX;
+            double reflectedVelocityY = particle.velocity * Math.sin(Math.toRadians(particle.angle)) - 2 * dotProduct * wallNormalY;
+
+            // Calculate the angle of the reflected velocity vector
+            double reflectedAngle = Math.toDegrees(Math.atan2(reflectedVelocityY, reflectedVelocityX));
+
+            // Set the new angle and velocity for the particle
+            particle.angle = (int)reflectedAngle;
         }
 
         public void draw(Graphics g) {
