@@ -8,6 +8,11 @@ import javax.swing.JPanel;
 public class Canvas extends JPanel{
     Particle particle = new Particle(100, 100, 45, 5, this);
 
+    public Canvas() {
+        // Set the background color to pink
+        setBackground(new Color(250, 219, 216));
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
