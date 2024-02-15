@@ -2,13 +2,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import java.util.*;
 
 public class Canvas extends JPanel {
-    private Particle particle;
     private JPanel buttonPanel;
+    private ArrayList<Particle> particles;
 
     public Canvas() {
         setLayout(new BorderLayout());
+        particles = new ArrayList<>();
 
         // Create the particle simulation panel
         JPanel particlePanel = new JPanel() {
@@ -17,6 +19,9 @@ public class Canvas extends JPanel {
                 super.paintComponent(g);
                 // Draw a rectangle representing the canvas
                 g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
+                for (Particle particle : particles) {
+                    particle.draw(g);
+                }
             }
         };
         particlePanel.setBackground(new Color(250, 219, 216));
@@ -41,6 +46,16 @@ public class Canvas extends JPanel {
         JButton addParticlebtn = new JButton("Add Particle");
         JButton addWallbtn = new JButton("Add Wall");
 
+        addParticlebtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Particle particle = new Particle(100, 100, 45, 10, particlePanel);
+                particles.add(particle);
+                Thread particleThread = new Thread(particle);
+                particleThread.start();
+            }
+        });
+
         // Add Particle input components
         buttonPanel.add(addParticlebtn);
 
@@ -52,6 +67,7 @@ public class Canvas extends JPanel {
         buttonPanel.add(addWallbtn);
 
         //===============End of Button Panel=====================
+
 
 
 

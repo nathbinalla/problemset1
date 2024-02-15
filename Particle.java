@@ -1,9 +1,5 @@
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
 
 public class Particle implements Runnable{
@@ -56,12 +52,14 @@ public class Particle implements Runnable{
 
     @Override
     public void run() {
-        Timer timer = new Timer(10, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                move();
+        // Run the particle movement continuously
+        while (true) {
+            move();
+            try {
+                Thread.sleep(10); // Adjust sleep time as needed
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
-        timer.start();
+        }
     }
 }
