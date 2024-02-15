@@ -1,5 +1,7 @@
 import java.awt.*;
 
+import javax.swing.JPanel;
+
 
 public class Particle{
     private int x;
@@ -9,11 +11,11 @@ public class Particle{
     private double velocity;
     private double dx;
     private double dy;
-    private Canvas canvas;
+    private JPanel canvas;
 
     private static int PARTICLE_SIZE = 10;
 
-    public Particle(int x, int y, double angle, double velocity, Canvas canvas) {
+    public Particle(int x, int y, double angle, double velocity, JPanel canvas) {
         this.x = x;
         this.y = y;
         this.angle = angle;
