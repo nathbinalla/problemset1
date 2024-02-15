@@ -17,12 +17,14 @@ public class Canvas extends JPanel {
                 super.paintComponent(g);
                 // Draw a rectangle representing the canvas
                 g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
-                particle.draw(g);
             }
         };
         particlePanel.setBackground(new Color(250, 219, 216));
         particlePanel.setPreferredSize(new Dimension(1280, 720));
         add(particlePanel, BorderLayout.CENTER);
+
+
+        //================Button Panel======================
 
         // Create the button panel
         buttonPanel = new JPanel();
@@ -49,17 +51,12 @@ public class Canvas extends JPanel {
         buttonPanel.add(xy_2WallTextField);
         buttonPanel.add(addWallbtn);
 
-        // Create the particle
-        particle = new Particle(100, 100, 45, 5, particlePanel);
+        //===============End of Button Panel=====================
 
-        // Set up timer to animate particle movement
-        Timer timer = new Timer(10, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                particle.move();
-                particlePanel.repaint(); // Repaint particle panel
-            }
-        });
-        timer.start();
+
+
+        // Set up timer to animate particle movement (Possibly for threads)
+        
     }
 }
+     

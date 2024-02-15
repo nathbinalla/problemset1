@@ -1,9 +1,12 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 
-public class Particle{
+public class Particle implements Runnable{
     private int x;
     private int y;
     private double angle;
@@ -49,5 +52,16 @@ public class Particle{
         g.fillPolygon(xPoints, yPoints, 3);
         g.fillArc(x, y, PARTICLE_SIZE / 2, PARTICLE_SIZE / 2, 0, 180);
         g.fillArc(x + PARTICLE_SIZE / 2, y, PARTICLE_SIZE / 2, PARTICLE_SIZE / 2, 0, 180);
+    }
+
+    @Override
+    public void run() {
+        Timer timer = new Timer(10, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                move();
+            }
+        });
+        timer.start();
     }
 }
