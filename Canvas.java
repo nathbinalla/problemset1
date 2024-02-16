@@ -2,17 +2,21 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import javax.swing.Timer;
+
 import java.util.*;
 
 public class Canvas extends JPanel {
     private JPanel buttonPanel;
     private ArrayList<Particle> particles;
     private ArrayList<Wall> walls;
+    private int fps;
 
     public Canvas() {
         setLayout(new BorderLayout());
         particles = new ArrayList<>();
         walls = new ArrayList<>();
+        fps = 0;
 
         // Create the particle simulation panel
         JPanel particlePanel = new JPanel() {
@@ -28,6 +32,9 @@ public class Canvas extends JPanel {
                 for (Wall wall : walls) {
                     wall.draw(g);
                 }
+
+                g.setColor(Color.BLACK);
+                g.drawString("FPS: " + fps, 10, 20);
             }
         };
         particlePanel.setBackground(new Color(250, 219, 216));
@@ -321,10 +328,30 @@ public class Canvas extends JPanel {
         });
 
         //===============End of Button Panel=====================
+        // Set up timer to animate particle movement (Possibly for threads)
+        Timer timer = new Timer(1000 / 60, new ActionListener() { // Update every 60th of a second
+            long lastUpdate = System.currentTimeMillis();
+            int frames = 0;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                long now = System.currentTimeMillis();
+                long elapsed = now - lastUpdate;
+                if (elapsed >= 500) { // Update FPS every 0.5 seconds
+                    fps = (int) (frames * 1000.0 / elapsed);
+                    frames = 0;
+                    lastUpdate = now;
+                    repaint(); // Repaint panel to update FPS
+                }
+                frames++;
+            }
+        });
+        timer.start();
+    }
 
         // Set up timer to animate particle movement (Possibly for threads)
         
-    }
+
 
     private void addLabelTextFieldPairforHide(JLabel label, JComponent textField) {
         JPanel pairPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
