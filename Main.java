@@ -6,7 +6,7 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         Canvas canvasPanel = new Canvas();
-        canvasPanel.setPreferredSize(new Dimension(1380, 720));
+        //canvasPanel.setPreferredSize(new Dimension(1380, 720));
 
         frame.getContentPane().add(canvasPanel);
         frame.pack();
