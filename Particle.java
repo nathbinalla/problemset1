@@ -1,6 +1,7 @@
 import java.awt.*;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import java.util.ArrayList;
 
 
 public class Particle implements Runnable{
@@ -12,10 +13,11 @@ public class Particle implements Runnable{
     private double dx;
     private double dy;
     private JPanel canvas;
+    private ArrayList<Wall> walls;
 
     private static int PARTICLE_SIZE = 10;
 
-    public Particle(int x, int y, double angle, double velocity, JPanel canvas) {
+    public Particle(int x, int y, double angle, double velocity, JPanel canvas, ArrayList<Wall> walls) {
         this.x = x;
         this.y = y;
         this.angle = angle;
@@ -24,6 +26,7 @@ public class Particle implements Runnable{
         this.dx = this.velocity * Math.cos(this.radians);
         this.dy = this.velocity * Math.sin(this.radians);
         this.canvas = canvas;
+        this.walls = walls;
     }
 
     public void move(){
@@ -49,6 +52,17 @@ public class Particle implements Runnable{
         g.fillArc(x + PARTICLE_SIZE / 2, y, PARTICLE_SIZE / 2, PARTICLE_SIZE / 2, 0, 180);
     }
 
+    public void checkWallCollision() {
+        // Check for collision with each wall
+        for (Wall wall : walls) {
+            if (wall.intersects(x, y)) {
+                dx = -dx;
+                dy = -dy;
+                break; // Exit loop after the first collision (assuming particles cannot intersect multiple walls simultaneously)
+            }
+        }
+    }
+
     public void update(){
         canvas.repaint();
     }
@@ -61,7 +75,7 @@ public class Particle implements Runnable{
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    update(); // Call move() on the EDT
+                    update();
                 }
             });
             try {
