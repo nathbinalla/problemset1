@@ -97,6 +97,130 @@ public class Canvas extends JPanel {
             }
         });
 
+        addBatch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selectedItem = (String) FormsComboBox.getSelectedItem();
+                String x1Str = x1PartTextField.getText();
+                String y1Str = y1PartTextField.getText();
+                String x2Str = x2PartTextField.getText();
+                String y2Str = y2PartTextField.getText();
+                String angleStr = angle.getText();
+                String veloStr = velocity.getText();
+                String startStr = start.getText();
+                String endStr = end.getText();
+                String nStr = n.getText();
+
+                int num = 0;
+                double x1 = 0;
+                double y1 = 0;
+                double x2 = 0;
+                double y2 = 0;
+                double ang = 0;
+                double velo = 0;
+                double strt = 0;
+                double nd = 0;
+
+                if (!nStr.isEmpty()){
+                    num = Integer.parseInt(nStr);
+                }
+                if (!x1Str.isEmpty()){
+                    x1 = Double.parseDouble(x1Str);
+                }
+                if (!y1Str.isEmpty()){
+                    y1 = Double.parseDouble(y1Str);
+                }
+                if (!x2Str.isEmpty()){
+                    x2 = Double.parseDouble(x2Str);
+                }
+                if (!y2Str.isEmpty()){    
+                    y2 = Double.parseDouble(y2Str);
+                }
+                if (!angleStr.isEmpty()){
+                    ang = Double.parseDouble(angleStr);
+                }
+                if (!veloStr.isEmpty()){    
+                    velo = Double.parseDouble(veloStr);
+                }
+                if (!startStr.isEmpty()){
+                    strt = Double.parseDouble(startStr);
+                }
+                if (!endStr.isEmpty()){
+                    nd = Double.parseDouble(endStr);
+                }
+                
+                switch (selectedItem) {
+                    case "Form 1":
+                        if (!nStr.isEmpty() && !x1Str.isEmpty() && !y1Str.isEmpty() && 
+                            !x2Str.isEmpty() && !y2Str.isEmpty() &&
+                            !angleStr.isEmpty() && !veloStr.isEmpty()){
+                            //logic here
+                            double dx = x2 - x1;
+                            double dy = y2 - y1;
+
+                            dx = dx/(num-1);
+                            dy = dy/(num-1);
+
+                            
+
+                            for (int i = 0; i < num; i++){
+                                if (i==0){
+                                    Particle particle = new Particle(x1, y1, ang, velo, particlePanel, walls);
+                                    particles.add(particle);
+                                    Thread particleThread = new Thread(particle);
+                                    particleThread.start();
+                                } else {
+                                    x1 += dx;
+                                    y1 += dy;
+                                    Particle particle = new Particle(x1, y1, ang, velo, particlePanel, walls);
+                                    particles.add(particle);
+                                    Thread particleThread = new Thread(particle);
+                                    particleThread.start();
+                                }
+                            }
+                        }
+                        break;
+                    
+                    case "Form 2":
+                        if (!nStr.isEmpty() && !x1Str.isEmpty() && !y1Str.isEmpty() &&
+                            !startStr.isEmpty() && !endStr.isEmpty() && !veloStr.isEmpty()){
+                            //logic here
+
+                            double dAng = (nd-strt)/(num-1);
+                            
+
+                            for (int i = 0; i < num; i++){
+                                double angl = strt + i * dAng;
+                                Particle particle = new Particle(x1, y1, angl, velo, particlePanel, walls);
+                                particles.add(particle);
+                                Thread particleThread = new Thread(particle);
+                                particleThread.start();
+                            }
+                        }
+                        break;
+
+                    case "Form 3":
+                        if (!nStr.isEmpty() && !x1Str.isEmpty() && !y1Str.isEmpty() && 
+                            !startStr.isEmpty() && !endStr.isEmpty() && !angleStr.isEmpty()){
+                            //logic here
+                            double dVelo = (nd-strt)/(num-1);
+                            
+                            for (int i = 0; i < num; i++){
+                                double vel = strt + i * dVelo;
+                                Particle particle = new Particle(x1, y1, ang, vel, particlePanel, walls);
+                                particles.add(particle);
+                                Thread particleThread = new Thread(particle);
+                                particleThread.start();
+                            }
+                        }
+                        break;
+                
+                    default:
+                        break;
+                }
+            }
+        });
+
         // Add Particle input components
         addLabelTextFieldPair("Forms:", FormsComboBox);
         addLabelTextFieldPair("n:", n);
@@ -117,7 +241,7 @@ public class Canvas extends JPanel {
         velocity.setVisible(true);
         angLabel.setVisible(true);
         angle.setVisible(true);
-
+        
         buttonPanel.add(addBatch);
 
         addLabelTextFieldPair2("start point: ", initx, inity);

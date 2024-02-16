@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 
 public class Particle implements Runnable{
-    private int x;
-    private int y;
+    private double x;
+    private double y;
     private double angle;
     private double radians;
     private double velocity;
@@ -17,10 +17,10 @@ public class Particle implements Runnable{
 
     private static int PARTICLE_SIZE = 10;
 
-    public Particle(int x, int y, double angle, double velocity, JPanel canvas, ArrayList<Wall> walls) {
+    public Particle(double x, double y, double angle, double velocity, JPanel canvas, ArrayList<Wall> walls) {
         this.x = x;
         this.y = y;
-        this.angle = -angle;
+        this.angle = angle;
         this.velocity = velocity;
         this.radians = Math.toRadians(this.angle);
         this.dx = this.velocity * Math.cos(this.radians);
@@ -45,15 +45,15 @@ public class Particle implements Runnable{
     public void draw(Graphics g) {   
         g.setColor(Color.RED);
     // Adjust the coordinates to match the desired coordinate system
-        int adjustedX = x;
-        int adjustedY = 720 - y - PARTICLE_SIZE;
+        double adjustedX = x;
+        double adjustedY = 720 - y - PARTICLE_SIZE;
 
         // Draw the heart-shaped particle
-        int[] xPoints = {adjustedX,  adjustedX + PARTICLE_SIZE, adjustedX + PARTICLE_SIZE / 2};
-        int[] yPoints = {adjustedY + PARTICLE_SIZE / 4,  adjustedY + PARTICLE_SIZE / 4, adjustedY + PARTICLE_SIZE};
+        int[] xPoints = {(int)adjustedX, (int) adjustedX + PARTICLE_SIZE, (int)adjustedX + PARTICLE_SIZE / 2};
+        int[] yPoints = {(int)adjustedY + PARTICLE_SIZE / 4,  (int)adjustedY + PARTICLE_SIZE / 4, (int)adjustedY + PARTICLE_SIZE};
         g.fillPolygon(xPoints, yPoints, 3);
-        g.fillArc(adjustedX, adjustedY, PARTICLE_SIZE / 2, PARTICLE_SIZE / 2, 0, 180);
-        g.fillArc(adjustedX + PARTICLE_SIZE / 2, adjustedY, PARTICLE_SIZE / 2, PARTICLE_SIZE / 2, 0, 180);
+        g.fillArc((int)adjustedX, (int)adjustedY, PARTICLE_SIZE / 2, PARTICLE_SIZE / 2, 0, 180);
+        g.fillArc((int)adjustedX + PARTICLE_SIZE / 2, (int)adjustedY, PARTICLE_SIZE / 2, PARTICLE_SIZE / 2, 0, 180);
     }
 
     public void checkWallCollision() {

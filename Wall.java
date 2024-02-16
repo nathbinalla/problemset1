@@ -18,7 +18,7 @@ public class Wall {
         g.drawLine(x1, y1, x2, y2);
     }
 
-    public boolean intersects(int px, int py) {
+    public boolean intersects(double px, double py) {
         // Check if the point (px, py) is within a small distance to the wall
         double distance = Math.abs((x2 - x1) * (y1 - py) - (x1 - px) * (y2 - y1)) / Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
         return distance < 5; // Adjust the threshold as needed
