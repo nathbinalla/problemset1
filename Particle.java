@@ -56,8 +56,19 @@ public class Particle implements Runnable{
         // Check for collision with each wall
         for (Wall wall : walls) {
             if (wall.intersects(x, y)) {
-                dx = -dx;
-                dy = -dy;
+                double wallNormalX = wall.getX2() - wall.getX1();
+                double wallNormalY = wall.getY2() - wall.getY1();
+
+                // Calculate the dot product of the velocity vector and the wall normal
+                double dotProduct = dx * wallNormalX + dy * wallNormalY;
+
+                // Calculate the reflection of the velocity vector
+                double reflectedDX = dx - 2 * dotProduct * wallNormalX / (wallNormalX * wallNormalX + wallNormalY * wallNormalY);
+                double reflectedDY = dy - 2 * dotProduct * wallNormalY / (wallNormalX * wallNormalX + wallNormalY * wallNormalY);
+
+                // Update the particle's velocity vector to the reflected values
+                dx = reflectedDX;
+                dy = reflectedDY;
                 break; // Exit loop after the first collision (assuming particles cannot intersect multiple walls simultaneously)
             }
         }

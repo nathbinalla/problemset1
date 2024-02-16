@@ -23,4 +23,20 @@ public class Wall {
         double distance = Math.abs((x2 - x1) * (y1 - py) - (x1 - px) * (y2 - y1)) / Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
         return distance < 5; // Adjust the threshold as needed
     }
+
+    public int getX1(){
+        return x1;
+    }
+
+    public int getY1(){
+        return y1;
+    }
+
+    public int getX2(){
+        return x2;
+    }
+
+    public int getY2(){
+        return y2;
+    }
 }
