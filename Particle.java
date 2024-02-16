@@ -20,7 +20,7 @@ public class Particle implements Runnable{
     public Particle(int x, int y, double angle, double velocity, JPanel canvas, ArrayList<Wall> walls) {
         this.x = x;
         this.y = y;
-        this.angle = angle;
+        this.angle = -angle;
         this.velocity = velocity;
         this.radians = Math.toRadians(this.angle);
         this.dx = this.velocity * Math.cos(this.radians);
@@ -34,22 +34,26 @@ public class Particle implements Runnable{
         y += dy;
 
         // Check if the particle reaches the boundaries
-        if (x <= 0 || x >= 1280 - 5) {
+        if (x < 0 || x >= 1280 - PARTICLE_SIZE) {
             dx = -dx; // Reverse the x-direction if hitting the horizontal boundaries
         }
-        if (y <= 0 || y >= 720 - 5) {
+        if (y < 0 || y >= 720 - PARTICLE_SIZE) {
             dy = -dy; // Reverse the y-direction if hitting the vertical boundaries
         }
     }
 
     public void draw(Graphics g) {   
         g.setColor(Color.RED);
+    // Adjust the coordinates to match the desired coordinate system
+        int adjustedX = x;
+        int adjustedY = 720 - y - PARTICLE_SIZE;
+
         // Draw the heart-shaped particle
-        int[] xPoints = {x,  x + PARTICLE_SIZE, x + PARTICLE_SIZE / 2};
-        int[] yPoints = {y + PARTICLE_SIZE / 4,  y + PARTICLE_SIZE / 4, y + PARTICLE_SIZE};
+        int[] xPoints = {adjustedX,  adjustedX + PARTICLE_SIZE, adjustedX + PARTICLE_SIZE / 2};
+        int[] yPoints = {adjustedY + PARTICLE_SIZE / 4,  adjustedY + PARTICLE_SIZE / 4, adjustedY + PARTICLE_SIZE};
         g.fillPolygon(xPoints, yPoints, 3);
-        g.fillArc(x, y, PARTICLE_SIZE / 2, PARTICLE_SIZE / 2, 0, 180);
-        g.fillArc(x + PARTICLE_SIZE / 2, y, PARTICLE_SIZE / 2, PARTICLE_SIZE / 2, 0, 180);
+        g.fillArc(adjustedX, adjustedY, PARTICLE_SIZE / 2, PARTICLE_SIZE / 2, 0, 180);
+        g.fillArc(adjustedX + PARTICLE_SIZE / 2, adjustedY, PARTICLE_SIZE / 2, PARTICLE_SIZE / 2, 0, 180);
     }
 
     public void checkWallCollision() {

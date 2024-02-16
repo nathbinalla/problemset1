@@ -7,6 +7,7 @@ import java.util.*;
 public class Canvas extends JPanel {
     private JPanel buttonPanel;
     private ArrayList<Particle> particles;
+    private ArrayList<Wall> walls;
 
     public Canvas() {
         setLayout(new BorderLayout());
@@ -38,7 +39,7 @@ public class Canvas extends JPanel {
 
         //Labels
         JLabel x1y1particLabel = new JLabel("start point: ");
-        JLabel x2y2particLabel = new JLabel("end point: ");
+        JLabel x2y2particLabel = new JLabel("end poin   t: ");
         JLabel angLabel = new JLabel("angle: ");
         JLabel velocityLabel = new JLabel("velocity: ");
         JLabel startLabel = new JLabel("start: ");
@@ -76,10 +77,23 @@ public class Canvas extends JPanel {
         addParticlebtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Particle particle = new Particle(100, 100, 45, 10, particlePanel);
-                particles.add(particle);
-                Thread particleThread = new Thread(particle);
-                particleThread.start();
+                if (!initx.getText().isEmpty() && !inity.getText().isEmpty() && !initangle.getText().isEmpty() && !initvelo.getText().isEmpty()){
+                    String xStr = initx.getText();
+                    String yStr = inity.getText();
+                    String angleStr = initangle.getText();
+                    String velocityStr = initvelo.getText();
+
+                    int x = Integer.parseInt(xStr);
+                    int y = Integer.parseInt(yStr);
+                    double angle = Double.parseDouble(angleStr);
+                    double velocity = Double.parseDouble(velocityStr);
+
+
+                    Particle particle = new Particle(x, y, angle, velocity, particlePanel, walls);
+                    particles.add(particle);
+                    Thread particleThread = new Thread(particle);
+                    particleThread.start();
+                }
             }
         });
 
