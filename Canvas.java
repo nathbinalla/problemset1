@@ -12,6 +12,7 @@ public class Canvas extends JPanel {
     public Canvas() {
         setLayout(new BorderLayout());
         particles = new ArrayList<>();
+        walls = new ArrayList<>();
 
         // Create the particle simulation panel
         JPanel particlePanel = new JPanel() {
@@ -22,6 +23,10 @@ public class Canvas extends JPanel {
                 g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
                 for (Particle particle : particles) {
                     particle.draw(g);
+                }
+
+                for (Wall wall : walls) {
+                    wall.draw(g);
                 }
             }
         };
@@ -220,6 +225,27 @@ public class Canvas extends JPanel {
                 }
             }
         });
+
+        addWallbtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed (ActionEvent e){
+                String x1Str = x1WallTextField.getText();
+                String y1Str = y1WallTextField.getText();
+                String x2Str = x2WallTextField.getText();
+                String y2Str = y2WallTextField.getText();
+
+                if (!x1Str.isEmpty() && !x2Str.isEmpty() && !y1Str.isEmpty() && !y2Str.isEmpty()){
+                    int x1 = Integer.parseInt(x1Str);
+                    int y1 = Integer.parseInt(y1Str);
+                    int x2 = Integer.parseInt(x2Str);
+                    int y2 = Integer.parseInt(y2Str);
+                    Wall wall = new Wall(x1, y1, x2, y2);
+
+                    walls.add(wall);
+                    particlePanel.repaint();
+                }
+            }
+        });;
 
         // Add Particle input components
         addLabelTextFieldPair("Forms:", FormsComboBox);

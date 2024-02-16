@@ -40,6 +40,8 @@ public class Particle implements Runnable{
         if (y < 0 || y >= 720 - PARTICLE_SIZE) {
             dy = -dy; // Reverse the y-direction if hitting the vertical boundaries
         }
+
+        checkWallCollision();
     }
 
     public void draw(Graphics g) {   
@@ -60,16 +62,17 @@ public class Particle implements Runnable{
         // Check for collision with each wall
         for (Wall wall : walls) {
             if (wall.intersects(x, y)) {
-                double wallNormalX = wall.getX2() - wall.getX1();
-                double wallNormalY = wall.getY2() - wall.getY1();
 
+                double wallNormalX = wall.getY2() - wall.getY1(); // Note: swapping X and Y to get perpendicular vector
+                double wallNormalY = wall.getX1() - wall.getX2();
+    
                 // Calculate the dot product of the velocity vector and the wall normal
                 double dotProduct = dx * wallNormalX + dy * wallNormalY;
-
+    
                 // Calculate the reflection of the velocity vector
                 double reflectedDX = dx - 2 * dotProduct * wallNormalX / (wallNormalX * wallNormalX + wallNormalY * wallNormalY);
                 double reflectedDY = dy - 2 * dotProduct * wallNormalY / (wallNormalX * wallNormalX + wallNormalY * wallNormalY);
-
+    
                 // Update the particle's velocity vector to the reflected values
                 dx = reflectedDX;
                 dy = reflectedDY;
@@ -94,7 +97,7 @@ public class Particle implements Runnable{
                 }
             });
             try {
-                Thread.sleep(10); // Adjust sleep time as needed
+                Thread.sleep(5); // Adjust sleep time as needed
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
