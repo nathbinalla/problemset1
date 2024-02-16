@@ -1,5 +1,6 @@
 import java.awt.*;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 
 public class Particle implements Runnable{
@@ -36,8 +37,6 @@ public class Particle implements Runnable{
         if (y <= 0 || y >= 720 - 5) {
             dy = -dy; // Reverse the y-direction if hitting the vertical boundaries
         }
-
-        canvas.repaint();
     }
 
     public void draw(Graphics g) {   
@@ -50,11 +49,21 @@ public class Particle implements Runnable{
         g.fillArc(x + PARTICLE_SIZE / 2, y, PARTICLE_SIZE / 2, PARTICLE_SIZE / 2, 0, 180);
     }
 
+    public void update(){
+        canvas.repaint();
+    }
+
     @Override
     public void run() {
         // Run the particle movement continuously
         while (true) {
             move();
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    update(); // Call move() on the EDT
+                }
+            });
             try {
                 Thread.sleep(10); // Adjust sleep time as needed
             } catch (InterruptedException e) {
